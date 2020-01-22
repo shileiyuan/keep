@@ -41,12 +41,15 @@ export default function Gallery() {
   // dirName createTime , size
   const [sortKey, setSortKey] = useState('dirName')
   // asc desc
-  const [sortType, setSortType] = useState('desc')
+  const [sortType, setSortType] = useState('asc')
   const [visibile, setVisibile] = useState(false)
 
   const [colCount, setColCount] = useState(0)
   const [imageCount, setImageCount] = useState(0)
   const [boxWidth, setBoxWidth] = useState(BOX_SIZE.S)
+
+  const [fetchLoading, setFetchLoading] = useState(false)
+  const [cleanLoading, setCleanLoading] = useState(false)
 
   const galleryRef = useRef(null)
 
@@ -60,17 +63,42 @@ export default function Gallery() {
     [imageCount]
   )
 
-  const handleFetch = dispatch.gallery.fetchGallery
-  const handleClean = dispatch.gallery.cleanGallery
+  const queryImages = useCallback(
+    () => {
+      return dispatch.gallery.queryImages({ sortType, sortKey })
+    },
+    [dispatch.gallery, sortKey, sortType]
+  )
 
-  const getColCount = useCallback(() => Math.floor(galleryRef.current.offsetWidth / boxWidth), [boxWidth])
+  const handleFetch = useCallback(
+    () => {
+      setFetchLoading(true)
+      dispatch.gallery.fetchGallery().then(() => {
+        setFetchLoading(false)
+        queryImages()
+      })
+    },
+    [dispatch.gallery, queryImages]
+  )
+  const handleClean = useCallback(
+    () => {
+      setCleanLoading(false)
+      dispatch.gallery.cleanGallery().then(() => {
+        setCleanLoading(false)
+        queryImages()
+      })
+    },
+    [dispatch.gallery, queryImages]
+  )
+
+  const getColCount = useCallback(() => Math.floor(Math.max(galleryRef.current.offsetWidth / boxWidth, 1)), [boxWidth])
 
   const waterfallLayout = useCallback(
     () => {
       const heightArr = []
       const boxs = document.querySelectorAll('.box')
       const padding = Math.floor((galleryRef.current.offsetWidth - boxWidth * colCount) / (colCount + 1))
-      console.log(galleryRef.current.offsetWidth, colCount, boxs.length, padding)
+      // console.log(galleryRef.current.offsetWidth, colCount, boxs.length, padding)
 
       for (let i = 0; i < boxs.length; i++) {
         const box = boxs[i]
@@ -92,13 +120,6 @@ export default function Gallery() {
       }
     },
     [boxWidth, colCount]
-  )
-
-  const queryImages = useCallback(
-    () => {
-      return dispatch.gallery.queryImages({ sortType, sortKey })
-    },
-    [dispatch.gallery, sortKey, sortType]
   )
 
   useEffect(() => {
@@ -125,7 +146,6 @@ export default function Gallery() {
     function resizeHandler() {
       const newColCount = getColCount()
       if (newColCount === colCount) {
-        console.log('resize count 相等')
         waterfallLayout()
       } else {
         setColCount(newColCount)
@@ -146,10 +166,9 @@ export default function Gallery() {
 
   // 当boxWidth或colCount改变的时候，自动触发布局算法
   useEffect(() => {
-    console.log('effect...')
+    // console.log('effect...')
     waterfallLayout()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colCount])
+  }, [waterfallLayout])
 
   // 当boxWidth改变的时候，异步改变colCount
   useEffect(() => {
@@ -164,7 +183,7 @@ export default function Gallery() {
   const handleImageLoad = (function () {
     if (imageCount === 0) return () => { }
     return after(imageCount - oldImageCountRef.current, () => {
-      console.log('imageload...')
+      // console.log('imageload...')
       waterfallLayout()
     })
   }())
@@ -189,7 +208,8 @@ export default function Gallery() {
         {
           imgs.slice(0, imageCount).map((image, index) => {
             const { name, size, createTime, dirName } = image
-            const src = `http://127.0.0.1:7001/images/${dirName}/${name}`
+            // const src = `http://127.0.0.1:7001/images/${dirName}/${name}`
+            const src = `/images/${dirName}/${name}`
             return (
               <Box
                 key={name}
@@ -231,8 +251,8 @@ export default function Gallery() {
         <div className='tool-group'>
           <h4>操作: </h4>
           <div className='btn-wrapper'>
-            <Button onClick={handleFetch}>Fetch</Button>
-            <Button onClick={handleClean}>clean</Button>
+            <Button onClick={handleFetch} loading={fetchLoading}>Fetch</Button>
+            <Button onClick={handleClean} loading={cleanLoading}>Clean</Button>
           </div>
         </div>
         <div className='tool-group'>
