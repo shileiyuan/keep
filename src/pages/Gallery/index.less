@@ -1,0 +1,110 @@
+.gallery {
+  &-tools {
+    margin-bottom: 20px;
+  }
+  &-waterfall {
+    position: relative;
+    // overflow: hidden;
+    .box {
+      // 在 .box 中设置了 padding 是为了留出视觉上的间距
+      // 之所以不使用 margin，是因为后面会使用 js 获取元素的 offsetWidth 和 offsetHeight
+      // 而这两个属性值是不计算 margin 的
+      // position: absolute;
+      float: left;
+      padding: 7px 3px;
+      box-sizing: border-box;
+      width: 256px;
+    }
+    .wrapper {
+      @keyframes boxZoom {
+        from {
+          transform: scale(0.5);
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      animation: boxZoom 0.3s ease-out;
+      animation-iteration-count: 1;
+      transition: 0.2s;
+      padding: 5px;
+      background-color: #fff;
+      border: 1px solid #e4e4e4;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+      &:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+      }
+    }
+    .pic {
+      font-size: 0; // 消除行内元素的间隙
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+    .text {
+      color: #999;
+      background: #fafafa;
+      font-size: 14px;
+      padding-top: 5px;
+      text-align: center;
+    }
+  }
+
+  &-expand-icon {
+    position: fixed;
+    width: 30px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 25px;
+    opacity: 0.3;
+    height: 100px;
+    svg {
+      height: 100%;
+    }
+    &:hover {
+      color: #1890ff;
+      display: block;
+      opacity: 1;
+    }
+  }
+}
+
+.gallery-drawer {
+  .tool-group {
+    h4 {
+      color: rgba(0, 0, 0, 0.65);
+    }
+    margin-bottom: 20px;
+
+    .btn-wrapper {
+      button {
+        margin-right: 5px;
+      }
+    }
+
+    .dropdown-btn-wrapper {
+      button {
+        &:first-of-type {
+          border-top-right-radius: unset;
+          border-bottom-right-radius: unset;
+          width: 100px;
+        }
+        &:last-of-type {
+          border-top-left-radius: unset;
+          border-bottom-left-radius: unset;
+          padding: 0 8px;
+          margin-left: -1px;
+        }
+        &:hover,
+        &:focus {
+          z-index: 2;
+        }
+      }
+    }
+  }
+}
