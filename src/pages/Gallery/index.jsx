@@ -211,7 +211,6 @@ export default function Gallery() {
         {
           imgs.slice(0, imageCount).map((image, index) => {
             const { name, size, createTime, dirName } = image
-            // const src = `http://127.0.0.1:7001/images/${dirName}/${name}`
             const src = `/images/${dirName}/${name}`
             return (
               <Box

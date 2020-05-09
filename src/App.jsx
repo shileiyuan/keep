@@ -16,11 +16,11 @@ if (process.env.NODE_ENV === 'mock') {
 
 export default function App() {
   return (
-    <React.StrictMode>
-      <Provider store={store}>
-        <Routes />
-      </Provider>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+    // </React.StrictMode>
   )
 }
 

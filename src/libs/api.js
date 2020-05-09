@@ -6,6 +6,7 @@ const API_BASE = '/api'
 const API = {
   get: {
     getUserInfo: '/user/getUserInfoByToken',
+    queryUsers: '/user/list',
 
     fetchGallery: '/gallery/fetch',
     queryImages: '/gallery/queryImages'

@@ -1,52 +1,46 @@
 import React from 'react'
+import { Layout, Menu } from 'antd'
+import { Link, Switch, Route, useRouteMatch, Redirect } from 'react-router-dom'
+import Theme from './Theme'
+import Users from './Users'
 
-const ThemeContext = React.createContext()
+import './index.less'
 
-ThemeContext.displayName = 'ThemeContext'
+const { Sider, Content } = Layout
 
-class ThemedText extends React.Component {
-  static contextType = ThemeContext
+const menus = [
+  { key: 'Users', Component: Users },
+  { key: 'Theme', Component: Theme }
+]
 
-  render() {
-    return (
-      <div style={{ color: this.context.color }}>
-        {this.props.children}
-      </div>
-    )
-  }
-}
+const DEFAULT_PATH = 'Users'
 
-class TodoList extends React.PureComponent {
-  render() {
-    return (
-      <ul>
-        {this.props.todos.map(todo =>
-          <li key={todo}><ThemedText>{todo}</ThemedText></li>
-        )}
-      </ul>
-    )
-  }
-}
-
-export default class Demo extends React.Component {
-  state = {
-    color: 'blue'
-  }
-
-  handleMakeRed = () => {
-    this.setState(state => ({ color: state.color === 'blue' ? 'red' : 'blue' }))
-  }
-
-  render() {
-    const TODOS = ['Get coffee', 'Eat cookies']
-
-    return (
-      <ThemeContext.Provider value={this.state}>
-        <button onClick={this.handleMakeRed}>
-          <ThemedText>Red please!</ThemedText>
-        </button>
-        <TodoList todos={TODOS} />
-      </ThemeContext.Provider>
-    )
-  }
+export default function Demo() {
+  const { path } = useRouteMatch()
+  const getPath = comPath => `${path}/${comPath}`
+  return (
+    <Layout className='demo'>
+      <Sider className='demo-sider'>
+        <Menu mode='inline'>
+          {menus.map(menu => {
+            const { key } = menu
+            return (
+              <Menu.Item key={key}>
+                <Link to={getPath(key)}>{key}</Link>
+              </Menu.Item>
+            )
+          })}
+        </Menu>
+      </Sider>
+      <Content className='demo-content'>
+        <Switch>
+          <Redirect from={path} to={getPath(DEFAULT_PATH)} exact />
+          {menus.map(menu => {
+            const { key, Component } = menu
+            return <Route path={getPath(key)} key={key}><Component /></Route>
+          })}
+        </Switch>
+      </Content>
+    </Layout>
+  )
 }
