@@ -13,12 +13,13 @@ export default function MainLayout(props) {
     { to: '/Gallery' },
     { to: '/Note' }
   ]
-  const selectedKeys = location.pathname.match(/^(\/\w+)/)[1]
+  const match = location.pathname.match(/^(\/\w+)/)
+  const selectedKeys = match ? [match[1]] : []
   return (
     <Layout className='main-layout'>
       <Header className='main-layout-header'>
         <div className='logo'>YSL</div>
-        <Menu mode='horizontal' selectedKeys={[selectedKeys]}>
+        <Menu mode='horizontal' selectedKeys={selectedKeys}>
           {items.map(({ to }) => (
             <Menu.Item key={to}><Link to={to}>{to.slice(1)}</Link></Menu.Item>
           ))}
