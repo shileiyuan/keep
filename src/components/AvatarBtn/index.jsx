@@ -1,6 +1,7 @@
 import React from 'react'
-import { Avatar, Dropdown, Menu, Icon } from 'antd'
+import { Avatar, Dropdown, Menu } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
+import { DownOutlined } from '@ant-design/icons'
 import './index.less'
 
 export default function AvatarBtn() {
@@ -18,7 +19,7 @@ export default function AvatarBtn() {
     <Dropdown overlay={menu} trigger={['click']}>
       <div className='user-info'>
         <Avatar size='large'>{userName}</Avatar>
-        <Icon type='down' />
+        <DownOutlined />
       </div>
     </Dropdown>
   )

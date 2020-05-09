@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react'
-import { Button, BackTop, Drawer, Icon, Radio, Dropdown, Menu } from 'antd'
+import { Button, BackTop, Drawer, Radio, Dropdown, Menu } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { DoubleRightOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
 import { parseTime, debounce } from '@/utils/common'
 import useDidUpdate from '@/hooks/useDidUpdate'
 import Box from './Box'
@@ -226,7 +227,7 @@ export default function Gallery() {
         }
       </div>
 
-      <Icon type='double-right' onClick={() => setVisibile(true)} className='gallery-expand-icon' />
+      <DoubleRightOutlined onClick={() => setVisibile(true)} className='gallery-expand-icon' />
 
       <Drawer
         closable={false}
@@ -264,7 +265,7 @@ export default function Gallery() {
               <Button>{sortKey}</Button>
             </Dropdown>
             <Button onClick={() => setSortType(type => type === 'asc' ? 'desc' : 'asc')}>
-              <Icon type={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} />
+              {sortType === 'asc' ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
             </Button>
           </div>
         </div>
