@@ -6,10 +6,12 @@ import useDidUpdate from '@/hooks/useDidUpdate'
 import Box from './Box'
 import './index.less'
 
+const DIVIDE_SYMBOL = '__'
+
 const BOX_SIZE = {
   S: 256,
   M: 335,
-  L: 800
+  L: 600
 }
 
 const SORT_RULES = ['dirName', 'createTime', 'size']
@@ -214,7 +216,7 @@ export default function Gallery() {
               <Box
                 key={name}
                 src={src}
-                text={`${dirName.split('_')[0]}-${name.split('__')[0]}-${Math.floor(size)}kb-${parseTime(createTime)}`}
+                text={`${dirName.split(DIVIDE_SYMBOL)[0]}-${name.split(DIVIDE_SYMBOL)[0]}-${Math.floor(size)}kb-${parseTime(createTime)}`}
                 style={{ width: boxWidth }}
                 onClick={() => window.open(src)}
                 onLoad={handleImageLoad}
@@ -256,8 +258,8 @@ export default function Gallery() {
           </div>
         </div>
         <div className='tool-group'>
+          <h4>排序: </h4>
           <div className='dropdown-btn-wrapper'>
-            <h4>排序: </h4>
             <Dropdown overlay={sortMenu} placement='bottomLeft' trigger={['click']}>
               <Button>{sortKey}</Button>
             </Dropdown>
@@ -265,7 +267,6 @@ export default function Gallery() {
               <Icon type={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} />
             </Button>
           </div>
-
         </div>
       </Drawer>
 

@@ -4,14 +4,19 @@ import R from 'ramda'
 export default {
   state: {
     imgs: [],
-    // asc desc
-    sortType: 'desc',
-    // dirName createTime , size
-    sortKey: 'dirName'
+    filterDir: ''
   },
   reducers: {
     save(state, payload) {
       return { ...state, ...payload }
+    },
+
+    filter(state, payload) {
+      return {
+        ...state,
+        filterDir: payload,
+        imgs: state.imgs.filter(img => img.dirName.includes(payload))
+      }
     }
   },
 

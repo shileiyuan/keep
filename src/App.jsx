@@ -16,9 +16,11 @@ if (process.env.NODE_ENV === 'mock') {
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </React.StrictMode>
   )
 }
 
@@ -49,7 +51,7 @@ function Home() {
     <MainLayout>
       <Route path='/Demo' component={Demo} />
       <Route path='/Gallery' component={Gallery} />
-      <Redirect path='/Home' to='/Gallery' />
+      <Redirect path='/Home' to='/Demo' />
     </MainLayout>
   )
 }
