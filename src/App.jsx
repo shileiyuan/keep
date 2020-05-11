@@ -49,9 +49,9 @@ function Routes() {
 function Home() {
   return (
     <MainLayout>
+      <Redirect path='/Home' to='/Demo' />
       <Route path='/Demo' component={Demo} />
       <Route path='/Gallery' component={Gallery} />
-      <Redirect path='/Home' to='/Demo' />
     </MainLayout>
   )
 }
