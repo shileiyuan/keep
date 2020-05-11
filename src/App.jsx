@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { Router, Switch, Route, Redirect } from 'react-router-dom'
-import history from '@/libs/history'
 import { Provider, useSelector, useDispatch } from 'react-redux'
+import 'antd/dist/antd.less'
+import '@/assets/styles/index.less'
+import history from '@/libs/history'
 import store from '@/models'
 import MainLayout from '@/components/MainLayout'
 import Demo from '@/pages/Demo'
 import Login from '@/pages/Login'
 import Gallery from '@/pages/Gallery'
-import 'antd/dist/antd.less'
-import '@/assets/styles/index.less'
 
 if (process.env.NODE_ENV === 'mock') {
   // require('@/mocks')

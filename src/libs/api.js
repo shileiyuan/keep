@@ -9,7 +9,9 @@ const API = {
     queryUsers: '/user/list',
 
     fetchGallery: '/gallery/fetch',
-    queryImages: '/gallery/queryImages'
+    queryImages: '/gallery/queryImages',
+
+    queryMatrixList: '/matrix/queryList'
   },
   post: {
     login: '/login',

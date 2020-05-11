@@ -10,8 +10,8 @@ export default function MainLayout(props) {
   const location = useLocation()
   const items = [
     { to: '/Demo' },
-    { to: '/Gallery' },
-    { to: '/Note' }
+    { to: '/Note' },
+    { to: '/Gallery' }
   ]
   const match = location.pathname.match(/^(\/\w+)/)
   const selectedKeys = match ? [match[1]] : []

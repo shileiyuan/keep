@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-export default function Users(props) {
+export default function Users() {
   const dispatch = useDispatch()
   const users = useSelector(state => state.demo.users)
   const columns = [

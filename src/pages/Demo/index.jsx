@@ -3,6 +3,7 @@ import { Layout, Menu } from 'antd'
 import { Link, Switch, Route, useRouteMatch, Redirect, useLocation } from 'react-router-dom'
 import Theme from './Theme'
 import Users from './Users'
+import MatrixList from './MatrixList'
 
 import './index.less'
 
@@ -10,10 +11,11 @@ const { Sider, Content } = Layout
 
 const menus = [
   { key: 'Users', Component: Users },
-  { key: 'Theme', Component: Theme }
+  { key: 'Theme', Component: Theme },
+  { key: 'MatrixList', Component: MatrixList }
 ]
 
-const DEFAULT_PATH = 'Users'
+const DEFAULT_PATH = 'MatrixList'
 
 export default function Demo() {
   const { path } = useRouteMatch()

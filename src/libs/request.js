@@ -1,5 +1,7 @@
 import axios from 'axios'
+import { message } from 'antd'
 import CONFIG from './config'
+import store from '@/models'
 
 const instance = axios.create({
   withCredentials: false,
@@ -18,6 +20,20 @@ function configRequest(config) {
 }
 
 instance.interceptors.request.use(configRequest)
-instance.interceptors.response.use(res => res.data)
+instance.interceptors.response.use(
+  res => res.data,
+  error => {
+    const { status } = error.response
+    switch (status) {
+      case 403:
+        // localStorage.removeItem(CONFIG.AUTH_TOKEN_STORAGE_KEY)
+        // window.location.href = '/'
+        store.dispatch({ type: 'login/logout' })
+        break
+      default:
+        message.error(status)
+    }
+  }
+)
 
 export default instance
