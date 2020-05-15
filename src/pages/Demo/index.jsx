@@ -18,7 +18,7 @@ const menus = [
   { key: 'Count', component: Count }
 ]
 
-const DEFAULT_PATH = 'Count'
+const DEFAULT_PATH = 'Users'
 
 export default function Demo() {
   const { path } = useRouteMatch()

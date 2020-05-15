@@ -29,23 +29,6 @@ export default function Tetris() {
   const { status, matrix, currentGraph, score, lines, nextGraph } =
     useShallowEqualSelector('tetris', ['status', 'matrix', 'currentGraph', 'score', 'lines', 'nextGraph'])
 
-  const stopAnimate = useCallback(
-    () => {
-      window.cancelAnimationFrame(ref.current.animateId)
-    },
-    []
-  )
-
-  const over = useCallback(
-    () => {
-      stopAnimate()
-      ref.current.animateCtrl = true
-      ref.current.startMoveStraightDown = false
-      dispatch.tetris.setStatus(STATUS.over)
-    },
-    [dispatch.tetris, stopAnimate]
-  )
-
   const clearLineAnimate = useCallback(
     lines => {
       ref.current.animateCtrl = false
@@ -85,7 +68,7 @@ export default function Tetris() {
           if (collisionCheck === false) {
             dispatch.tetris.updateCurrentGraph(R.evolve({ offsetY: R.inc }, currentGraph))
           } else if (collisionCheck === 'GAME_OVER') {
-            over()
+            dispatch.tetris.setStatus(STATUS.over)
           } else {
             ref.current.startMoveStraightDown = false
             const lines = getCompletedLines(matrix, currentGraph)
@@ -100,51 +83,47 @@ export default function Tetris() {
         }
       }
     },
-    [clearLineAnimate, currentGraph, dispatch.tetris, matrix, over]
+    [clearLineAnimate, currentGraph, dispatch.tetris, matrix]
   )
 
-  animateCallback.current = startTime => {
-    const currentTime = Date.now()
-    if (ref.current.animateCtrl && currentTime - startTime >= 600) {
-      startTime = currentTime
+  useEffect(() => {
+    animateCallback.current = startTime => {
+      const currentTime = Date.now()
+      console.log('animate......')
+      if (ref.current.animateCtrl && currentTime - startTime >= 600) {
+        startTime = currentTime
+        moveGraph('down')
+      }
+      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(startTime))
+    }
+    moveGraphDownRef.current = () => {
       moveGraph('down')
     }
-    ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(startTime))
-  }
+  }, [moveGraph])
 
-  moveGraphDownRef.current = () => {
-    moveGraph('down')
-  }
-
-  const startAnimate = useCallback(
-    startTime => {
-      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(startTime))
-    },
-    []
-  )
-
-  const restart = useCallback(
-    () => {
-      dispatch.tetris.setStatus(STATUS.playing)
-      dispatch.tetris.initialData()
-      startAnimate(Date.now())
-    },
-    [dispatch.tetris, startAnimate]
-  )
+  useEffect(() => {
+    if (status === STATUS.playing) {
+      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(Date.now()))
+      return () => {
+        window.cancelAnimationFrame(ref.current.animateId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ref.current.animateId = null
+      }
+    }
+  }, [status])
 
   const toggleStatus = useCallback(
     () => {
       if (status === STATUS.unload || status === STATUS.over) {
-        restart()
+        dispatch.tetris.setStatus(STATUS.playing)
+        dispatch.tetris.loadMatrix()
       } else if (status === STATUS.paused) {
         dispatch.tetris.setStatus(STATUS.playing)
-        startAnimate(Date.now())
       } else if (status === STATUS.playing) {
         dispatch.tetris.setStatus(STATUS.paused)
-        stopAnimate()
       }
     },
-    [dispatch.tetris, restart, startAnimate, status, stopAnimate]
+    [dispatch.tetris, status]
   )
 
   const moveStraightDown = useCallback(
@@ -172,9 +151,15 @@ export default function Tetris() {
     [currentGraph, dispatch.tetris, matrix]
   )
 
+  const unload = useCallback(
+    () => {
+      dispatch.tetris.unload()
+    },
+    [dispatch.tetris]
+  )
+
   const onKeydown = useCallback(
     e => {
-      console.log(e)
       switch (e.key) {
         case 'a': // A 左
           e.preventDefault()
@@ -202,15 +187,15 @@ export default function Tetris() {
           e.preventDefault()
           toggleStatus()
           break
-        case 'r':
+        case 'u': // unload
           e.preventDefault()
-          restart()
+          unload()
           break
         default:
           break
       }
     },
-    [moveGraph, moveStraightDown, restart, rotateGraph, toggleStatus]
+    [moveGraph, moveStraightDown, rotateGraph, toggleStatus, unload]
   )
   useEffect(() => {
     window.addEventListener('keydown', onKeydown)

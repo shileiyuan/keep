@@ -5,30 +5,32 @@ import {
   STATUS
 } from '@/pure/tetris'
 
-export default {
-  state: {
-    status: STATUS.unload,
-    matrix: getInitialMatrix(),
-    score: 0,
-    lines: 0,
-    currentGraph: {
-      name: '',
-      graph: [],
-      color: '',
-      offsetX: 3,
-      offsetY: 0
-    },
-    nextGraph: {
-      name: '',
-      graph: [],
-      color: '',
-      offsetX: 1.5,
-      offsetY: 0
-    }
+export const getInitialState = () => ({
+  status: STATUS.unload,
+  matrix: getInitialMatrix(),
+  score: 0,
+  lines: 0,
+  currentGraph: {
+    name: '',
+    graph: [],
+    color: '',
+    offsetX: 3,
+    offsetY: 0
   },
+  nextGraph: {
+    name: '',
+    graph: [],
+    color: '',
+    offsetX: 1.5,
+    offsetY: 0
+  }
+})
+
+export default {
+  state: getInitialState(),
 
   reducers: {
-    initialData(state) {
+    loadMatrix(state) {
       return {
         ...state,
         matrix: getInitialMatrix(),
@@ -37,6 +39,10 @@ export default {
         score: 0,
         lines: 0
       }
+    },
+
+    unload(state) {
+      return getInitialState()
     },
 
     addScore(state, len) {

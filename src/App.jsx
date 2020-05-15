@@ -51,7 +51,7 @@ function Routes() {
 function Home() {
   return (
     <MainLayout>
-      <Redirect path='/Home' to='/Tetris' />
+      <Redirect path='/Home' to='/Demo' />
       <Route path='/Demo' component={Demo} />
       <Route path='/Gallery' component={Gallery} />
       <Route path='/Tetris' component={Tetris} />
