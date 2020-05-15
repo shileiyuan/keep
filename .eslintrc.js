@@ -28,6 +28,7 @@ module.exports = {
     'no-debugger': isProd ? 'error' : 'off',
     'react/prop-types': 'off',
     'space-before-function-paren': 'off',
-    'quote-props': ['error', 'consistent']
+    'quote-props': ['error', 'consistent'],
+    'react/jsx-handler-names': 'off'
   }
 }

@@ -10,6 +10,7 @@ export default function MainLayout(props) {
   const location = useLocation()
   const items = [
     { to: '/Demo' },
+    { to: '/Tetris' },
     { to: '/Note' },
     { to: '/Gallery' }
   ]

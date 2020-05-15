@@ -5,6 +5,7 @@ import Theme from './Theme'
 import Users from './Users'
 import MatrixList from './MatrixList'
 import MatrixDetail from './MatrixList/MatrixDetail'
+import Count from './Count'
 
 import './index.less'
 
@@ -13,10 +14,11 @@ const { Sider, Content } = Layout
 const menus = [
   { key: 'Users', component: Users },
   { key: 'Theme', component: Theme },
-  { key: 'MatrixList', component: MatrixList }
+  { key: 'MatrixList', component: MatrixList },
+  { key: 'Count', component: Count }
 ]
 
-const DEFAULT_PATH = 'MatrixList'
+const DEFAULT_PATH = 'Count'
 
 export default function Demo() {
   const { path } = useRouteMatch()

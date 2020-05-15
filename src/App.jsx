@@ -9,6 +9,8 @@ import MainLayout from '@/components/MainLayout'
 import Demo from '@/pages/Demo'
 import Login from '@/pages/Login'
 import Gallery from '@/pages/Gallery'
+import Tetris from '@/pages/Tetris'
+// import Tetris from '@/pages/Tetris/index.hooks.jsx'
 
 if (process.env.NODE_ENV === 'mock') {
   // require('@/mocks')
@@ -49,9 +51,10 @@ function Routes() {
 function Home() {
   return (
     <MainLayout>
-      <Redirect path='/Home' to='/Demo' />
+      <Redirect path='/Home' to='/Tetris' />
       <Route path='/Demo' component={Demo} />
       <Route path='/Gallery' component={Gallery} />
+      <Route path='/Tetris' component={Tetris} />
     </MainLayout>
   )
 }
