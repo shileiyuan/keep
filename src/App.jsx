@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import { Provider, useSelector, useDispatch } from 'react-redux'
+import R from 'ramda'
 import 'antd/dist/antd.less'
 import '@/assets/styles/index.less'
 import history from '@/libs/history'
@@ -10,7 +11,7 @@ import Demo from '@/pages/Demo'
 import Login from '@/pages/Login'
 import Gallery from '@/pages/Gallery'
 import Tetris from '@/pages/Tetris'
-// import Tetris from '@/pages/Tetris/index.hooks.jsx'
+import Tools from '@/pages/Tools'
 
 if (process.env.NODE_ENV === 'mock') {
   // require('@/mocks')
@@ -49,12 +50,17 @@ function Routes() {
 }
 
 function Home() {
+  const routes = [
+    { path: '/Demo', component: Demo },
+    { path: '/Tools', component: Tools },
+    { path: '/Tetris', component: Tetris },
+    { path: '/Gallery', component: Gallery }
+  ]
+  const menus = R.pluck('path', routes)
   return (
-    <MainLayout>
+    <MainLayout menus={menus}>
       <Redirect path='/Home' to='/Demo' />
-      <Route path='/Demo' component={Demo} />
-      <Route path='/Gallery' component={Gallery} />
-      <Route path='/Tetris' component={Tetris} />
+      {routes.map(({ path, component }) => <Route key={path} path={path} component={component} />)}
     </MainLayout>
   )
 }

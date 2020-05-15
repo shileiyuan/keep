@@ -8,12 +8,6 @@ const { Header, Content } = Layout
 
 export default function MainLayout(props) {
   const location = useLocation()
-  const items = [
-    { to: '/Demo' },
-    { to: '/Tetris' },
-    { to: '/Note' },
-    { to: '/Gallery' }
-  ]
   const match = location.pathname.match(/^(\/\w+)/)
   const selectedKeys = match ? [match[1]] : []
   return (
@@ -21,8 +15,8 @@ export default function MainLayout(props) {
       <Header className='main-layout-header'>
         <div className='logo'>YSL</div>
         <Menu mode='horizontal' selectedKeys={selectedKeys}>
-          {items.map(({ to }) => (
-            <Menu.Item key={to}><Link to={to}>{to.slice(1)}</Link></Menu.Item>
+          {props.menus.map(path => (
+            <Menu.Item key={path}><Link to={path}>{path.slice(1)}</Link></Menu.Item>
           ))}
         </Menu>
         <AvatarBtn />
