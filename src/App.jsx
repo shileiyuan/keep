@@ -1,37 +1,38 @@
-import React, { useEffect } from 'react'
-import { Router, Switch, Route, Redirect } from 'react-router-dom'
-import { Provider, useSelector, useDispatch } from 'react-redux'
+import React, { useEffect, lazy } from 'react'
+import { Router, Switch, Route } from 'react-router-dom'
+import { Provider, useDispatch } from 'react-redux'
 import R from 'ramda'
 import 'antd/dist/antd.less'
 import '@/assets/styles/index.less'
 import history from '@/libs/history'
+import { renderRoutes } from '@/utils/router'
+import useShallowEqualSelector from '@/hooks/useShallowEqualSelector'
 import store from '@/models'
 import MainLayout from '@/components/MainLayout'
-import Demo from '@/pages/Demo'
 import Login from '@/pages/Login'
-import Gallery from '@/pages/Gallery'
-import Tetris from '@/pages/Tetris'
-import Tools from '@/pages/Tools'
 
-if (process.env.NODE_ENV === 'mock') {
-  // require('@/mocks')
-}
+function Home() {
+  const routes = [
+    { path: '/', redirect: '/Demo' },
+    { path: '/Demo', component: lazy(() => import('@/pages/Demo')) },
+    { path: '/Tools', component: lazy(() => import('@/pages/Tools')) },
+    { path: '/Tetris', component: lazy(() => import('@/pages/Tetris')) },
+    { path: '/Gallery', component: lazy(() => import('@/pages/Gallery')) },
+    { path: '*', component: lazy(() => import('@/pages/NotFound')) }
+  ]
+  const menus = R.pipe(R.slice(0, -1), R.pluck('path'))(routes)
 
-export default function App() {
   return (
-    // <React.StrictMode>
-    <Provider store={store}>
-      <Routes />
-    </Provider>
-    // </React.StrictMode>
+    <MainLayout menus={menus}>
+      {renderRoutes(routes)}
+    </MainLayout>
   )
 }
 
 function Routes() {
   const dispatch = useDispatch()
 
-  const isAuthed = useSelector(state => state.login.isAuthed)
-  const userId = useSelector(state => state.login.userId)
+  const { userId } = useShallowEqualSelector('login', ['userId'])
 
   useEffect(() => {
     if (!userId) {
@@ -41,26 +42,18 @@ function Routes() {
   return (
     <Router history={history}>
       <Switch>
-        <Route path='/Login' render={() => isAuthed ? <Redirect to='/Home' /> : <Login />} />
-        <Route path='/Home' render={props => isAuthed ? <Home {...props} /> : <Redirect to='/Login' />} />
-        <Route render={props => isAuthed ? <Home {...props} /> : <Redirect to='/Login' />} />
+        <Route path='/Login' component={Login} exact />
+        <Route path='/' component={Home} />
+        {/* <Route path='*' render={props => isAuthed ? <Home {...props} /> : <Redirect to='/Login' />} /> */}
       </Switch>
     </Router>
   )
 }
 
-function Home() {
-  const routes = [
-    { path: '/Demo', component: Demo },
-    { path: '/Tools', component: Tools },
-    { path: '/Tetris', component: Tetris },
-    { path: '/Gallery', component: Gallery }
-  ]
-  const menus = R.pluck('path', routes)
+export default function App() {
   return (
-    <MainLayout menus={menus}>
-      <Redirect path='/Home' to='/Demo' />
-      {routes.map(({ path, component }) => <Route key={path} path={path} component={component} />)}
-    </MainLayout>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
   )
 }

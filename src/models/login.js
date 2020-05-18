@@ -11,6 +11,9 @@ export default {
   reducers: {
     save(state, payload) {
       return { ...state, ...payload }
+    },
+    saveInfo(state, payload) {
+      return { ...state, ...payload }
     }
   },
 

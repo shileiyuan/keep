@@ -2,15 +2,29 @@ import React from 'react'
 import { Form, Input, Button } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import API from '@/libs/api'
+import CONFIG from '@/libs/config'
 import './index.less'
 
 const FormItem = Form.Item
 
 function Login() {
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const onFinish = values => {
-    dispatch.login.login(values)
+  const onFinish = async values => {
+    const res = await API.post.login(values)
+    if (res.success) {
+      const { token, name, id } = res.data
+      dispatch.login.saveInfo({
+        isAuthed: true,
+        userId: id,
+        userName: name
+      })
+      localStorage.setItem(CONFIG.AUTH_TOKEN_STORAGE_KEY, token)
+      history.push('/')
+    }
   }
 
   return (

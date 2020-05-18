@@ -1,6 +1,6 @@
 import React from 'react'
-import { Layout, Menu } from 'antd'
-import { Link, Switch, Route, useRouteMatch, Redirect, useLocation } from 'react-router-dom'
+import { Route } from 'react-router-dom'
+import SubLayout from '@/components/SubLayout'
 import Theme from './Theme'
 import Users from './Users'
 import MatrixList from './MatrixList'
@@ -9,47 +9,25 @@ import Count from './Count'
 
 import './index.less'
 
-const { Sider, Content } = Layout
-
-const menus = [
-  { key: 'Users', component: Users },
-  { key: 'Theme', component: Theme },
-  { key: 'MatrixList', component: MatrixList },
-  { key: 'Count', component: Count }
-]
-
 const DEFAULT_PATH = 'Users'
 
+const routes = [
+  {
+    path: '/Demo',
+    routes: [
+      { path: 'Users', component: Users },
+      { path: 'Theme', component: Theme },
+      { path: 'MatrixList', component: MatrixList },
+      { path: 'Count', component: Count }
+    ],
+    redirect: `/Demo/${DEFAULT_PATH}`
+  }
+]
+
 export default function Demo() {
-  const { path } = useRouteMatch()
-  const location = useLocation()
-  const getPath = comPath => `${path}/${comPath}`
-  const match = location.pathname.match(/^\/\w+\/(\w+)/)
-  const selectedKeys = match ? [match[1]] : []
   return (
-    <Layout className='demo'>
-      <Sider className='demo-sider'>
-        <Menu mode='inline' selectedKeys={selectedKeys}>
-          {menus.map(menu => {
-            const { key } = menu
-            return (
-              <Menu.Item key={key}>
-                <Link to={getPath(key)}>{key}</Link>
-              </Menu.Item>
-            )
-          })}
-        </Menu>
-      </Sider>
-      <Content className='demo-content'>
-        <Switch>
-          <Redirect from={path} to={getPath(DEFAULT_PATH)} exact />
-          {menus.map(menu => {
-            const { key, component } = menu
-            return <Route path={getPath(key)} key={key} component={component} exact />
-          })}
-          <Route path='/Demo/MatrixList/MatrixDetail/:matrixId' component={MatrixDetail} exact />
-        </Switch>
-      </Content>
-    </Layout>
+    <SubLayout routes={routes}>
+      <Route path='/Demo/MatrixList/MatrixDetail/:matrixId' component={MatrixDetail} exact />
+    </SubLayout>
   )
 }

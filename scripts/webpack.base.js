@@ -50,6 +50,10 @@ module.exports = function (env) {
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/,
           use: ['file-loader']
+        },
+        {
+          test: /\.(mp3|wav)$/,
+          use: ['file-loader']
         }
       ]
     },

@@ -5,6 +5,8 @@ import R from 'ramda'
 import GameBoard from './GameBoard'
 import InfoBoard from './InfoBoard'
 import './index.less'
+import diu from '@/assets/musics/diu.wav'
+import deng from '@/assets/musics/deng.wav'
 import {
   STATUS,
   checkCollisions,
@@ -24,10 +26,21 @@ export default function Tetris() {
 
   const moveGraphDownRef = useRef()
 
+  const audioDiuRef = useRef()
+  const audioDengRef = useRef()
+
   const dispatch = useDispatch()
 
   const { status, matrix, currentGraph, score, lines, nextGraph } =
     useShallowEqualSelector('tetris', ['status', 'matrix', 'currentGraph', 'score', 'lines', 'nextGraph'])
+
+  const playDu = useCallback(
+    () => {
+      audioDiuRef.current.currentTime = 0
+      audioDiuRef.current.play()
+    },
+    []
+  )
 
   const clearLineAnimate = useCallback(
     lines => {
@@ -50,6 +63,8 @@ export default function Tetris() {
 
   const moveGraph = useCallback(
     direction => {
+      if (status !== STATUS.playing) return
+      playDu()
       const collisionCheck = checkCollisions(direction, matrix, currentGraph)
       switch (direction) {
         case 'left': {
@@ -83,34 +98,8 @@ export default function Tetris() {
         }
       }
     },
-    [clearLineAnimate, currentGraph, dispatch.tetris, matrix]
+    [clearLineAnimate, currentGraph, dispatch.tetris, matrix, playDu, status]
   )
-
-  useEffect(() => {
-    animateCallback.current = startTime => {
-      const currentTime = Date.now()
-      console.log('animate......')
-      if (ref.current.animateCtrl && currentTime - startTime >= 600) {
-        startTime = currentTime
-        moveGraph('down')
-      }
-      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(startTime))
-    }
-    moveGraphDownRef.current = () => {
-      moveGraph('down')
-    }
-  }, [moveGraph])
-
-  useEffect(() => {
-    if (status === STATUS.playing) {
-      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(Date.now()))
-      return () => {
-        window.cancelAnimationFrame(ref.current.animateId)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        ref.current.animateId = null
-      }
-    }
-  }, [status])
 
   const toggleStatus = useCallback(
     () => {
@@ -139,6 +128,7 @@ export default function Tetris() {
 
   const rotateGraph = useCallback(
     () => {
+      if (status !== STATUS.playing) return
       const rotatedGraph = {
         ...currentGraph,
         graph: rotate(currentGraph.graph)
@@ -148,7 +138,7 @@ export default function Tetris() {
         dispatch.tetris.updateCurrentGraph(rotatedGraph)
       }
     },
-    [currentGraph, dispatch.tetris, matrix]
+    [currentGraph, dispatch.tetris, matrix, status]
   )
 
   const unload = useCallback(
@@ -175,6 +165,7 @@ export default function Tetris() {
           break
         case 'j': // J 旋转
           e.preventDefault()
+          playDu()
           rotateGraph()
           break
         case 'k': // K 一键到底
@@ -195,7 +186,7 @@ export default function Tetris() {
           break
       }
     },
-    [moveGraph, moveStraightDown, rotateGraph, toggleStatus, unload]
+    [moveGraph, moveStraightDown, playDu, rotateGraph, toggleStatus, unload]
   )
   useEffect(() => {
     window.addEventListener('keydown', onKeydown)
@@ -203,6 +194,42 @@ export default function Tetris() {
       window.removeEventListener('keydown', onKeydown)
     }
   }, [onKeydown])
+
+  useEffect(() => {
+    const audioContext = new AudioContext()
+    audioDiuRef.current = new Audio(diu)
+    audioDengRef.current = new Audio(deng)
+    audioContext.createMediaElementSource(audioDiuRef.current).connect(audioContext.destination)
+    audioContext.createMediaElementSource(audioDengRef.current).connect(audioContext.destination)
+  }, [])
+
+  useEffect(() => {
+    animateCallback.current = startTime => {
+      const currentTime = Date.now()
+      if (ref.current.animateCtrl && currentTime - startTime >= 600) {
+        startTime = currentTime
+        moveGraph('down')
+      }
+      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(startTime))
+    }
+    moveGraphDownRef.current = () => {
+      moveGraph('down')
+    }
+  }, [moveGraph])
+
+  useEffect(() => {
+    if (status === STATUS.playing) {
+      ref.current.animateId = window.requestAnimationFrame(() => animateCallback.current(Date.now()))
+      audioDengRef.current.play()
+      return () => {
+        window.cancelAnimationFrame(ref.current.animateId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ref.current.animateId = null
+        audioDengRef.current.pause()
+        audioDengRef.current.currentTime = 0
+      }
+    }
+  }, [status])
   return (
     <div className='tetris'>
       <GameBoard matrix={matrix} currentGraph={currentGraph} />

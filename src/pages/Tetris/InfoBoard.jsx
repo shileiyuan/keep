@@ -8,7 +8,7 @@ export default function InfoBorad(props) {
   const { nextGraph, status, score, lines, toggleStatus } = props
   const getStatusText = useCallback(
     () => {
-      if (status === STATUS.paused) {
+      if (status === STATUS.paused || status === STATUS.unload) {
         return 'Start'
       } else if (status === STATUS.playing) {
         return 'Pause'
