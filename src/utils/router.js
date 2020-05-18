@@ -9,7 +9,9 @@ export const formatRoutes = (routes, parent = '/') => {
           path: route.path.startsWith('/') ? route.path : `${parent}/${route.path}`.replace(/\/+/, '/'),
           exact: route.exact,
           strict: route.strict,
-          component: route.component
+          component: route.component,
+          // 是否放在menu中
+          menu: route.menu
         })
       } else if (route.redirect) {
         router.redirects.push({

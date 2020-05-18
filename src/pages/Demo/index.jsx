@@ -7,17 +7,16 @@ import MatrixList from './MatrixList'
 import MatrixDetail from './MatrixList/MatrixDetail'
 import Count from './Count'
 
-import './index.less'
-
 const DEFAULT_PATH = 'Users'
 
 const routes = [
   {
     path: '/Demo',
     routes: [
-      { path: 'Users', component: Users },
+      { path: 'Users', component: Users, exact: true },
       { path: 'Theme', component: Theme },
-      { path: 'MatrixList', component: MatrixList },
+      { path: 'MatrixList', component: MatrixList, exact: true },
+      { path: 'MatrixList/MatrixDetail/:matrixId', component: MatrixDetail, exact: true, menu: false },
       { path: 'Count', component: Count }
     ],
     redirect: `/Demo/${DEFAULT_PATH}`
@@ -27,7 +26,7 @@ const routes = [
 export default function Demo() {
   return (
     <SubLayout routes={routes}>
-      <Route path='/Demo/MatrixList/MatrixDetail/:matrixId' component={MatrixDetail} exact />
+      {/* <Route path='/Demo/MatrixList/MatrixDetail/:matrixId' component={MatrixDetail} exact /> */}
     </SubLayout>
   )
 }

@@ -15,7 +15,7 @@ export default function SubLayout(props) {
       <Sider className='sub-layout-sider'>
         <Menu mode='inline' selectedKeys={[location.pathname]}>
           {
-            router.routes.map(({ path }) => {
+            router.routes.filter(({ menu = true }) => menu).map(({ path }) => {
               const match = path.match(/\/([^/]+)$/)
               return (
                 <Menu.Item key={path}>
