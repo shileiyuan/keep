@@ -38,14 +38,14 @@ export default function JSONParser() {
     <div>
       <Button type='primary' onClick={parse}>转换</Button>
       <Card title='输入' style={{ marginTop: 20 }}>
-        <TextArea onChange={e => setInput(e.target.value)} value={input} autoSize />
+        <TextArea onChange={e => setInput(e.target.value)} value={input} autoSize={{ minRows: 4 }} />
       </Card>
       <Card
         title='输出'
         style={{ marginTop: 20 }}
         extra={<CopyOutlined onClick={copyContent} />}
       >
-        <TextArea value={output} autoSize />
+        <TextArea value={output} autoSize={{ minRows: 4 }} />
       </Card>
     </div>
   )
