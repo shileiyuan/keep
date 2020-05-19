@@ -29,7 +29,6 @@ export default function SubLayout(props) {
       <Content className='sub-layout-content'>
         <Switch>
           {renderRoutes(props.routes)}
-          {props.children}
         </Switch>
       </Content>
     </Layout>

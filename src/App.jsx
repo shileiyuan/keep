@@ -1,11 +1,9 @@
 import React, { useEffect, lazy } from 'react'
 import { Router, Switch, Route } from 'react-router-dom'
 import { Provider, useDispatch } from 'react-redux'
-import R from 'ramda'
 import 'antd/dist/antd.less'
 import '@/assets/styles/index.less'
 import history from '@/libs/history'
-import { renderRoutes } from '@/utils/router'
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector'
 import store from '@/models'
 import MainLayout from '@/components/MainLayout'
@@ -19,15 +17,10 @@ function Home() {
     { path: '/Tools', component: lazy(() => import('@/pages/Tools')) },
     { path: '/Tetris', component: lazy(() => import('@/pages/Tetris')) },
     { path: '/Gallery', component: lazy(() => import('@/pages/Gallery')) },
-    { path: '*', component: lazy(() => import('@/pages/NotFound')) }
+    { path: '*', component: lazy(() => import('@/pages/NotFound')), menu: false }
   ]
-  const menus = R.pipe(R.slice(0, -1), R.pluck('path'))(routes)
 
-  return (
-    <MainLayout menus={menus}>
-      {renderRoutes(routes)}
-    </MainLayout>
-  )
+  return <MainLayout routes={routes} />
 }
 
 function Routes() {
