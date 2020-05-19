@@ -1,0 +1,32 @@
+@tool-bg: #ffffff;
+@tool-color: #9098a4;
+@tool-active-color: #3883f8;
+@divider-color: #e6eaef;
+
+.graph-tools {
+  border-bottom: 1px solid @divider-color;
+  background: @tool-bg;
+
+  .tool-group {
+    display: inline-block;
+    color: @tool-color;
+    &:not(:last-child) {
+      border-right: 1px solid @divider-color;
+    }
+
+    .group-item {
+      margin-left: 10px;
+      // i {
+      cursor: pointer;
+      font-size: 16px;
+      &:hover,
+      &.active {
+        color: @tool-active-color;
+      }
+      // }
+      &:last-child {
+        margin-right: 10px;
+      }
+    }
+  }
+}

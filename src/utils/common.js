@@ -25,3 +25,17 @@ export const debounce = (fn, delay, scope) => {
     }, delay)
   }
 }
+
+export function isNotEmptyArray(arr) {
+  return Array.isArray(arr) && arr.length > 0
+}
+
+// 给d3的元素批量设置属性
+export function setAttrs(attrs, element) {
+  attrs.forEach(([key, value]) => {
+    element.attr(key, value)
+  })
+  return element
+}
+
+export function noop() { }

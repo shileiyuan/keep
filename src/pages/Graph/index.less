@@ -1,0 +1,25 @@
+@margin-top: 0px;
+@margin-common: 0px;
+
+@tool-height: 40px;
+
+
+.graph {
+  background-color: #fff;
+  background-image: url("../../assets/images/graph_bg.png");
+  background-repeat: repeat;
+  border: 1px solid #E6EAEF;
+  width: ~"calc(100% - 2 * @{margin-common})";
+  height: ~"calc(100% - @{margin-top} - @{margin-common})";
+  margin: @margin-top @margin-common @margin-common @margin-common;
+
+  &-tools {
+    height: @tool-height;
+    line-height: @tool-height;
+  }
+
+  &-stage {
+    width: 100%;
+    height: ~"calc(100% - @{tool-height})";
+  }
+}

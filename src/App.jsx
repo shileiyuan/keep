@@ -13,8 +13,9 @@ import Login from '@/pages/Login'
 
 function Home() {
   const routes = [
-    { path: '/', redirect: '/Demo' },
+    { path: '/', redirect: '/Graph' },
     { path: '/Demo', component: lazy(() => import('@/pages/Demo')) },
+    { path: '/Graph', component: lazy(() => import('@/pages/Graph')) },
     { path: '/Tools', component: lazy(() => import('@/pages/Tools')) },
     { path: '/Tetris', component: lazy(() => import('@/pages/Tetris')) },
     { path: '/Gallery', component: lazy(() => import('@/pages/Gallery')) },

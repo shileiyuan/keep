@@ -1,0 +1,45 @@
+@svg-box-stroke: #5d8fea;
+@svg-anchor-core: #fff;
+@svg-node-stroke: #9098a4;
+@svg-anchor-surround-fill: #55bbea;
+
+.node {
+  // &-selected {
+  //   & > .node-shape {
+  //     visibility: hidden;
+  //   }
+  // }
+  &-shape {
+    &:hover {
+      & > .connect-anchors {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.connect-anchors {
+  visibility: hidden;
+  &-pointer {
+    cursor: crosshair;
+    .core {
+      fill: @svg-anchor-core;
+      stroke: @svg-node-stroke;
+      stroke-width: 1px;
+    }
+    .outside {
+      opacity: 0;
+    }
+    .surround {
+      fill: @svg-anchor-surround-fill;
+      stroke-width: 0;
+      opacity: 0;
+    }
+    &:hover {
+      .surround {
+        opacity: 0.6;
+        transform: scale(1.2);
+      }
+    }
+  }
+}
