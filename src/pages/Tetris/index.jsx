@@ -55,7 +55,7 @@ export default function Tetris() {
           dispatch.tetris.addScore(lines.length)
           dispatch.tetris.settleGraph(lines)
           ref.current.animateCtrl = true
-        }, 500)
+        }, 200)
       }, 200)
     },
     [dispatch.tetris, matrix]
@@ -64,16 +64,18 @@ export default function Tetris() {
   const moveGraph = useCallback(
     direction => {
       if (status !== STATUS.playing) return
-      playDu()
       const collisionCheck = checkCollisions(direction, matrix, currentGraph)
       switch (direction) {
         case 'left': {
+          playDu()
           if (collisionCheck === false) {
             dispatch.tetris.updateCurrentGraph(R.evolve({ offsetX: R.dec }, currentGraph))
           }
           break
         }
         case 'right': {
+          playDu()
+
           if (collisionCheck === false) {
             dispatch.tetris.updateCurrentGraph(R.evolve({ offsetX: R.inc }, currentGraph))
           }
@@ -82,6 +84,7 @@ export default function Tetris() {
         case 'down': {
           if (collisionCheck === false) {
             dispatch.tetris.updateCurrentGraph(R.evolve({ offsetY: R.inc }, currentGraph))
+            playDu()
           } else if (collisionCheck === 'GAME_OVER') {
             dispatch.tetris.setStatus(STATUS.over)
           } else {

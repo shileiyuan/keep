@@ -1,5 +1,4 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
 import SubLayout from '@/components/SubLayout'
 import Theme from './Theme'
 import Users from './Users'
@@ -25,8 +24,6 @@ const routes = [
 
 export default function Demo() {
   return (
-    <SubLayout routes={routes}>
-      {/* <Route path='/Demo/MatrixList/MatrixDetail/:matrixId' component={MatrixDetail} exact /> */}
-    </SubLayout>
+    <SubLayout routes={routes} />
   )
 }

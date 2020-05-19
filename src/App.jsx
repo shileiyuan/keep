@@ -32,7 +32,7 @@ function Home() {
 function Routes() {
   const dispatch = useDispatch()
 
-  const { userId } = useShallowEqualSelector('login', ['userId'])
+  const { userId, isAuthed } = useShallowEqualSelector('login', ['userId', 'isAuthed'])
 
   useEffect(() => {
     if (!userId) {
@@ -42,9 +42,7 @@ function Routes() {
   return (
     <Router history={history}>
       <Switch>
-        <Route path='/Login' component={Login} exact />
-        <Route path='/' component={Home} />
-        {/* <Route path='*' render={props => isAuthed ? <Home {...props} /> : <Redirect to='/Login' />} /> */}
+        <Route path='/' render={props => isAuthed ? <Home {...props} /> : <Login />} />
       </Switch>
     </Router>
   )
