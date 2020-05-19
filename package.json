@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --env=mock",
     "dev": "webpack-dev-server --env=dev",
     "build": "rm -rf build && webpack --env=prod",
-    "lint": "eslint --init"
+    "lint": "eslint --fix --ext .js,.jsx src"
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
