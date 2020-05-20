@@ -162,7 +162,7 @@ export function getEdgeCoord(node, direction) {
   const { x, y, width, height } = node
   const map = {
     TOP: { x: x + width / 2, y },
-    RIGHT: { x, y: y + height / 2 },
+    RIGHT: { x: x + width, y: y + height / 2 },
     BOTTOM: { x: x + width / 2, y: y + height },
     LEFT: { x, y: y + height / 2 }
   }

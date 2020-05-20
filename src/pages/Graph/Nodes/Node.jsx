@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import R from 'ramda'
+import _ from 'lodash'
 import * as d3 from 'd3'
 import cls from 'classnames'
 import { useDispatch } from 'react-redux'
@@ -94,6 +95,7 @@ export default function Node(props) {
       }))
       dispatch.graph.update({ nodes: newNodes })
     }
+    const delayDrag = _.throttle(onDrag, 100)
 
     let startX
     let startY
@@ -113,7 +115,7 @@ export default function Node(props) {
         .on('drag', function () {
           offsetX = d3.event.x - startX
           offsetY = d3.event.y - startY
-          onDrag(currentNodePath, offsetX, offsetY)
+          delayDrag(currentNodePath, offsetX, offsetY)
         })
         .on('end', function () {
           offsetX = d3.event.x - startX

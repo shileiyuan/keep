@@ -8,9 +8,9 @@ import { formatNodes } from '@/pure/graph'
 export default function Graph(props) {
   const dispatch = useDispatch()
   useEffect(() => {
-    const { nodes, edges, children, ...restProps } = props
+    const { nodes, edges } = props
     const formattedNodes = formatNodes(nodes)
-    dispatch.graph.init({ ...restProps, nodes: formattedNodes, edges })
+    dispatch.graph.updateWithBackup({ nodes: formattedNodes, edges })
   }, [dispatch.graph, props])
   return (
     <div className='graph'>

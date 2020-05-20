@@ -1,6 +1,8 @@
-import React, { useMemo, useRef, useEffect, useCallback } from 'react'
+import React, { useMemo, useRef, useEffect } from 'react'
 import * as d3 from 'd3'
+import { useDispatch } from 'react-redux'
 import useSelector from '@/hooks/useShallowEqualSelector'
+import uuid from '@/utils/uuid'
 
 const CONNECT_DIRECTION = {
   TOP: 'TOP',
@@ -9,8 +11,11 @@ const CONNECT_DIRECTION = {
   LEFT: 'LEFT'
 }
 
+let targetInfo = null
+
 export default function ConnectAnchors(props) {
-  const { svgInfo } = useSelector('graph', ['svgInfo'])
+  const { svgInfo, edges } = useSelector('graph', ['svgInfo', 'edges'])
+  const dispatch = useDispatch()
   const { width, height, x, y, id } = props.data
 
   const anchorsRef = useRef()
@@ -22,25 +27,25 @@ export default function ConnectAnchors(props) {
     { x: 0, y: height / 2, direct: CONNECT_DIRECTION.LEFT }
   ]), [width, height])
 
-  const dragLine = useCallback((startX, startY, endX, endY) => {
-    const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`
-    svgInfo.newLine.attr('d', pathStr)
-  }, [svgInfo.newLine])
-
   useEffect(() => {
-    const connectAnchor = d3.select(anchorsRef.current)
-    // console.log(anchorsRef.current.parentElement)
-    // console.log(anchorsRef.current.parentNode)
-    const anchors = connectAnchor.selectAll('.connect-anchors-pointer').data(list)
-    let startX, startY, endX, endY, startId
+    const anchorEl = d3.select(anchorsRef.current)
+    const anchors = anchorEl.selectAll('.connect-anchors-pointer').data(list)
+    let startX, startY, endX, endY
+
+    function dragLine(startX, startY, endX, endY) {
+      const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`
+      svgInfo.newLine.attr('d', pathStr)
+    }
+
+    function removeLine() {
+      svgInfo.newLine.attr('d', 'M 0 0')
+    }
 
     anchors.call(
       d3.drag()
         .on('start', function (d) {
           startX = d3.event.x + x
           startY = d3.event.y + y
-          startId = id
-          // console.log(d, id)
         })
         .on('drag', function (d) {
           endX = d3.event.x + x
@@ -48,16 +53,28 @@ export default function ConnectAnchors(props) {
           dragLine(startX, startY, endX, endY)
         })
         .on('end', function (d) {
-          if (id !== startId) {
-            console.log('canEnd')
+          if (targetInfo !== null) {
+            const newEdge = {
+              id: uuid(),
+              source: id,
+              sourceDirection: d.direct,
+              target: targetInfo.id,
+              targetDirection: targetInfo.direct
+            }
+            console.log(newEdge)
+            const newEdges = [...edges, newEdge]
+            dispatch.graph.updateWithBackup({ edges: newEdges })
           }
+          removeLine()
         })
     )
 
     anchors.on('mouseover', function (d) {
-      // console.log(d, id, 'mouseover')
+      targetInfo = { ...d, id }
+    }).on('mouseout', function (d) {
+      targetInfo = null
     })
-  }, [dragLine, id, list, svgInfo.newLine, x, y])
+  }, [dispatch.graph, edges, id, list, svgInfo.newLine, x, y])
 
   return (
     <g className='connect-anchors' ref={anchorsRef}>
@@ -67,6 +84,7 @@ export default function ConnectAnchors(props) {
             key={index}
             className='connect-anchors-pointer'
             transform={`translate(${x}, ${y})`}
+            data-drag='false'
           >
             <circle className='outside' r='16' />
             <circle className='surround' r='8' />
