@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import { useDispatch } from 'react-redux'
 import useSelector from '@/hooks/useShallowEqualSelector'
 import uuid from '@/utils/uuid'
+import { getAbsNodeFromTree } from '@/pure/graph'
 
 const CONNECT_DIRECTION = {
   TOP: 'TOP',
@@ -14,7 +15,7 @@ const CONNECT_DIRECTION = {
 let targetInfo = null
 
 export default function ConnectAnchors(props) {
-  const { svgInfo, edges } = useSelector('graph', ['svgInfo', 'edges'])
+  const { svgInfo, edges, nodes } = useSelector('graph', ['svgInfo', 'edges', 'nodes'])
   const dispatch = useDispatch()
   const { width, height, x, y, id } = props.data
 
@@ -40,16 +41,17 @@ export default function ConnectAnchors(props) {
     function removeLine() {
       svgInfo.newLine.attr('d', 'M 0 0')
     }
+    const currentNode = getAbsNodeFromTree(nodes, id)
 
     anchors.call(
       d3.drag()
         .on('start', function (d) {
-          startX = d3.event.x + x
-          startY = d3.event.y + y
+          startX = d3.event.x + currentNode.x
+          startY = d3.event.y + currentNode.y
         })
         .on('drag', function (d) {
-          endX = d3.event.x + x
-          endY = d3.event.y + y
+          endX = d3.event.x + currentNode.x
+          endY = d3.event.y + currentNode.y
           dragLine(startX, startY, endX, endY)
         })
         .on('end', function (d) {
@@ -61,7 +63,6 @@ export default function ConnectAnchors(props) {
               target: targetInfo.id,
               targetDirection: targetInfo.direct
             }
-            console.log(newEdge)
             const newEdges = [...edges, newEdge]
             dispatch.graph.updateWithBackup({ edges: newEdges })
           }
@@ -74,7 +75,7 @@ export default function ConnectAnchors(props) {
     }).on('mouseout', function (d) {
       targetInfo = null
     })
-  }, [dispatch.graph, edges, id, list, svgInfo.newLine, x, y])
+  }, [dispatch.graph, edges, id, list, nodes, svgInfo.newLine, x, y])
 
   return (
     <g className='connect-anchors' ref={anchorsRef}>
