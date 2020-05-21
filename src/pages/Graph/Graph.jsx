@@ -11,6 +11,9 @@ export default function Graph(props) {
     const { nodes, edges } = props
     const formattedNodes = formatNodes(nodes)
     dispatch.graph.updateWithBackup({ nodes: formattedNodes, edges })
+    return () => {
+      dispatch.graph.reset()
+    }
   }, [dispatch.graph, props])
   return (
     <div className='graph'>

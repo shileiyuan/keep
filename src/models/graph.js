@@ -2,7 +2,7 @@ import Backup from '@/utils/Backup'
 
 const backup = new Backup()
 
-const initialState = {
+const getInitialState = () => ({
   nodes: [],
   edges: [],
   svgInfo: {},
@@ -10,10 +10,10 @@ const initialState = {
   selectedEdges: [],
   undoCount: 0,
   redoCount: 0
-}
+})
 
 export default {
-  state: initialState,
+  state: getInitialState(),
 
   reducers: {
 
@@ -43,6 +43,10 @@ export default {
       const item = backup.redo()
       const backupStatus = backup.checkStatus()
       return Object.assign({}, state, item, backupStatus)
+    },
+    reset(state) {
+      backup.reset()
+      return getInitialState()
     }
 
   }

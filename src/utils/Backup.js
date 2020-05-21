@@ -34,4 +34,9 @@ export default class Backup {
       redoCount: Math.max(this.list.length - 1 - this.pointer, 0)
     }
   }
+
+  reset() {
+    this.list = []
+    this.pointer = 0
+  }
 }
