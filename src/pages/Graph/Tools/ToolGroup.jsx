@@ -10,7 +10,8 @@ function Tool(props) {
     return () => {
       keyEvent.removeEvent(codes, onClick)
     }
-  }, [codes, onClick])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Tooltip placement='bottom' title={title}>

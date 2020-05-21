@@ -14,15 +14,15 @@ export default function WithDraw(props) {
       onClick: () => {
         dispatch.graph.undo()
       },
-      codes: [['f', 'ctrlKey'], ['z', 'metaKey']]
+      codes: [['z', 'ctrlKey'], ['z', 'metaKey']]
     },
     {
       title: `重做(ctrl+r) ${redoCount}`,
       icon: <RedoOutlined />,
       onClick: () => {
         dispatch.graph.redo()
-      }
-      // codes: [['r', 'ctrlKey']]
+      },
+      codes: [['r', 'ctrlKey'], ['r', 'metaKey']]
     }
   ]
   return <ToolGroup items={items} />

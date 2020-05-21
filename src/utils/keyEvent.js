@@ -3,6 +3,12 @@ import { isNotEmptyArray } from './common'
 
 const MODIFIER_KEYS = ['ctrlKey', 'altKey', 'metaKey', 'shiftKey']
 
+// this.events = {
+//   keydown: {
+//     cb: func,
+//     list: []
+//   }
+// }
 class KeyEvent {
   constructor() {
     this.events = {}
@@ -12,16 +18,15 @@ class KeyEvent {
     const types = Object.keys(this.events)
     const item = { codes, callback }
     if (types.includes(type)) {
-      const index = this.events[type].findIndex(group => R.equals(group.codes, codes))
+      const index = this.events[type].list.findIndex(group => R.equals(group.codes, codes))
       if (index > -1) {
-        this.events[type][index] = item
+        this.events[type].list[index] = item
       } else {
-        this.events[type].push(item)
+        this.events[type].list.push(item)
       }
     } else {
-      this.events[type] = [item]
-      document.addEventListener(type, e => {
-        this.events[type].forEach((item, index) => {
+      const cb = e => {
+        this.events[type].list.forEach((item, index) => {
           const { codes, callback } = item
           if (typeof callback === 'function') {
             const shouldFire = isNotEmptyArray(codes) ? codes.some(group => {
@@ -30,18 +35,27 @@ class KeyEvent {
               })
             }) : true
             if (shouldFire) {
+              e.preventDefault()
               callback(e)
             }
           }
         })
-      })
+      }
+      this.events[type] = { list: [item], cb }
+      document.addEventListener(type, cb)
     }
   }
 
   removeEvent(codes, callback, type = 'keydown') {
-    const list = this.events[type]
-    if (list !== undefined) {
-      this.events[type] = list.filter(item => callback === item.callback && R.equals(codes, item.codes))
+    const event = this.events[type]
+    if (typeof event !== 'undefined') {
+      const list = event.list.filter(item => callback === item.callback && R.equals(codes, item.codes))
+      if (list.length === 0) {
+        document.removeEventListener(type, this.events[type].cb)
+        delete this.events[type]
+      } else {
+        this.events[type].list = list
+      }
     }
   }
 }
