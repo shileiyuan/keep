@@ -20,6 +20,7 @@ import useSelector from '@/hooks/useShallowEqualSelector'
 import Nodes from './index.jsx'
 import { shapes } from './shapes'
 import ConnectAnchors from './ConnectAnchors'
+import ResizeAnchors from './ResizeAnchors'
 
 function findShape(node) {
   return shapes.find(item => item.key === node.shape)
@@ -34,11 +35,13 @@ export default function Node(props) {
 
   const shape = findShape(data)
 
+  // 处理节点拖动
   useEffect(() => {
     if (!ref.current) return
 
     function onDragEnd(currentNode, offsetX, offsetY) {
       // hideDragingNode()
+      // if (offsetX === 0 && offsetY === 0) return
       let newNodes = []
       const absCurrentNode = R.evolve({
         x: R.add(offsetX),
@@ -104,29 +107,33 @@ export default function Node(props) {
     let currentNode
     let currentNodePath
     const dom = d3.select(ref.current)
-    dom.call(
-      d3.drag()
-        .on('start', function () {
-          startX = d3.event.x
-          startY = d3.event.y
-          currentNode = getAbsNodeFromTree(nodes, data.id)
-          currentNodePath = findNodePath(nodes, data.id)
-        })
-        .on('drag', function () {
-          offsetX = d3.event.x - startX
-          offsetY = d3.event.y - startY
-          delayDrag(currentNodePath, offsetX, offsetY)
-        })
-        .on('end', function () {
-          offsetX = d3.event.x - startX
-          offsetY = d3.event.y - startY
+    const drag = d3.drag()
+      .on('start', function () {
+        startX = d3.event.x
+        startY = d3.event.y
+        currentNode = getAbsNodeFromTree(nodes, data.id)
+        currentNodePath = findNodePath(nodes, data.id)
+      })
+      .on('drag', function () {
+        offsetX = d3.event.x - startX
+        offsetY = d3.event.y - startY
+        delayDrag(currentNodePath, offsetX, offsetY)
+      })
+      .on('end', function () {
+        offsetX = d3.event.x - startX
+        offsetY = d3.event.y - startY
+        setTimeout(() => {
+          // 这个计算很复杂，耗时很久，如果不异步执行，就会阻塞click事件的触发
+          // 复现：第一次点击最外层元素的时候，不会触发click事件
           onDragEnd(currentNode, offsetX, offsetY)
-        })
-    )
-  }, [data.id, dispatch, nodes])
+        }, 0)
+      })
 
+    dom.call(drag)
+  }, [data.id, dispatch.graph, nodes])
+
+  // 设置节点文字
   useEffect(() => {
-    // 设置节点文字
     if (!data.shapeName) return
     const text = d3.select(textRef.current)
     if (isNotEmptyArray(data.children)) {
@@ -150,7 +157,6 @@ export default function Node(props) {
   }, [data])
 
   function handleClick(e) {
-    e.preventDefault()
     e.stopPropagation()
     dispatch.graph.update({ selectedNodes: [data] })
   }
@@ -169,7 +175,7 @@ export default function Node(props) {
     >
       <g className='node-shape'>
         {shape ? shape.component(data) : null}
-        <ConnectAnchors data={data} />
+        {isSelected ? <ResizeAnchors data={data} /> : <ConnectAnchors data={data} />}
       </g>
       {data.shapeName && <text ref={textRef}>{data.shapeName}</text>}
       {isNotEmptyArray(data.children) && <Nodes data={data.children} />}

@@ -5,23 +5,23 @@ const list = [
   {
     key: 'resizeWrap',
     className: 'resize-rect',
-    component: <path />
+    component: <path stroke='#54e3c2' fill='#e2f6f9' opacity='0.4' />
   },
   {
     key: 'newLine',
     className: 'new-line',
-    component: <path stroke='#3cd768' fill='none' strokeWidth='2' />
+    component: <path stroke='red' fill='none' strokeWidth='2' />
   },
   {
     key: 'newDragLine',
     className: 'new-drag-line',
     component: <path strokeDasharray='5,5' stroke='#3cd768' fill='none' strokeWidth='2' />
-  },
-  {
-    key: 'dragingNode',
-    className: 'draging-node',
-    component: <rect />
   }
+  // {
+  //   key: 'dragingNode',
+  //   className: 'draging-node',
+  //   component: <rect />
+  // }
 ]
 // /ɔːg'zɪlɪərɪ/ 辅助的，补充的，备用的
 function Auxiliary(props, ref) {

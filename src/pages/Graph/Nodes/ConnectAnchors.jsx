@@ -17,7 +17,7 @@ let targetInfo = null
 export default function ConnectAnchors(props) {
   const { svgInfo, edges, nodes } = useSelector('graph', ['svgInfo', 'edges', 'nodes'])
   const dispatch = useDispatch()
-  const { width, height, x, y, id } = props.data
+  const { width, height, id } = props.data
 
   const anchorsRef = useRef()
 
@@ -31,7 +31,7 @@ export default function ConnectAnchors(props) {
   useEffect(() => {
     const anchorEl = d3.select(anchorsRef.current)
     const anchors = anchorEl.selectAll('.connect-anchors-pointer').data(list)
-    let startX, startY, endX, endY
+    let startX, startY, endX, endY, currentNode
 
     function dragLine(startX, startY, endX, endY) {
       const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`
@@ -41,11 +41,11 @@ export default function ConnectAnchors(props) {
     function removeLine() {
       svgInfo.newLine.attr('d', 'M 0 0')
     }
-    const currentNode = getAbsNodeFromTree(nodes, id)
 
     anchors.call(
       d3.drag()
         .on('start', function (d) {
+          currentNode = getAbsNodeFromTree(nodes, id)
           startX = d3.event.x + currentNode.x
           startY = d3.event.y + currentNode.y
         })
@@ -75,7 +75,7 @@ export default function ConnectAnchors(props) {
     }).on('mouseout', function (d) {
       targetInfo = null
     })
-  }, [dispatch.graph, edges, id, list, nodes, svgInfo.newLine, x, y])
+  }, [dispatch.graph, edges, id, list, nodes, svgInfo.newLine])
 
   return (
     <g className='connect-anchors' ref={anchorsRef}>
