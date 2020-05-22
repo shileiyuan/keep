@@ -31,7 +31,7 @@ export default function ConnectAnchors(props) {
   useEffect(() => {
     const anchorEl = d3.select(anchorsRef.current)
     const anchors = anchorEl.selectAll('.connect-anchors-pointer').data(list)
-    let startX, startY, endX, endY, currentNode
+    let startX, startY, endX, endY, currentNode, isDrag
 
     function dragLine(startX, startY, endX, endY) {
       const pathStr = `M ${startX} ${startY} L ${endX} ${endY}`
@@ -45,17 +45,19 @@ export default function ConnectAnchors(props) {
     anchors.call(
       d3.drag()
         .on('start', function (d) {
+          isDrag = false
           currentNode = getAbsNodeFromTree(nodes, id)
           startX = d3.event.x + currentNode.x
           startY = d3.event.y + currentNode.y
         })
         .on('drag', function (d) {
+          isDrag = true
           endX = d3.event.x + currentNode.x
           endY = d3.event.y + currentNode.y
           dragLine(startX, startY, endX, endY)
         })
         .on('end', function (d) {
-          if (targetInfo !== null) {
+          if (targetInfo !== null && isDrag) {
             const newEdge = {
               id: uuid(),
               source: id,

@@ -131,19 +131,16 @@ export default function ResizeAnchors(props) {
     let currentNode, isDrag
     const drag = d3.drag()
       .on('start', function () {
-        console.log('start...')
         isDrag = false
         currentNode = getAbsNodeFromTree(nodes, id)
       })
       .on('drag', function (d) {
-        console.log('drag...')
         isDrag = true
         const rect = d.resize(d3.event, currentNode)
         const { x, y, width, height } = rect
         svgInfo.resizeWrap.attr('d', `M ${x} ${y} h ${width} v ${height} H ${x} Z`)
       })
       .on('end', function (d) {
-        console.log('end..')
         if (!isDrag) return
         svgInfo.resizeWrap.attr('d', 'M 0 0')
         const rect = d.resize(d3.event, currentNode)

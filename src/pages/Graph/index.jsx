@@ -50,7 +50,8 @@ const nodes = [
     width: 150,
     height: 150,
     style: {
-      stroke: 'black'
+      stroke: '#07aff2',
+      strokeWidth: '20'
     }
     // shapeName: '4'
   },

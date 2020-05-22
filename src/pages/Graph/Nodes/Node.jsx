@@ -100,26 +100,24 @@ export default function Node(props) {
     }
     const delayDrag = _.throttle(onDrag, 100)
 
-    let startX
-    let startY
-    let offsetX
-    let offsetY
-    let currentNode
-    let currentNodePath
+    let startX, startY, offsetX, offsetY, currentNode, currentNodePath, isDrag
     const dom = d3.select(ref.current)
     const drag = d3.drag()
       .on('start', function () {
+        isDrag = false
         startX = d3.event.x
         startY = d3.event.y
         currentNode = getAbsNodeFromTree(nodes, data.id)
         currentNodePath = findNodePath(nodes, data.id)
       })
       .on('drag', function () {
+        isDrag = true
         offsetX = d3.event.x - startX
         offsetY = d3.event.y - startY
         delayDrag(currentNodePath, offsetX, offsetY)
       })
       .on('end', function () {
+        if (!isDrag) return
         offsetX = d3.event.x - startX
         offsetY = d3.event.y - startY
         setTimeout(() => {
