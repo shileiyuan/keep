@@ -5,6 +5,7 @@
 
 
 .graph {
+  position: relative;
   background-color: #fff;
   background-image: url("../../assets/images/graph_bg.png");
   background-repeat: repeat;
@@ -12,7 +13,7 @@
   width: ~"calc(100% - 2 * @{margin-common})";
   height: ~"calc(100% - @{margin-top} - @{margin-common})";
   margin: @margin-top @margin-common @margin-common @margin-common;
-
+  overflow: hidden;
   &-tools {
     height: @tool-height;
     line-height: @tool-height;

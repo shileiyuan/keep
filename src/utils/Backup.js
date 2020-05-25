@@ -1,15 +1,15 @@
 export default class Backup {
   constructor(initialList = [], count = 3000) {
-    this.count = count + 1
+    this.count = count
     this.list = initialList
     this.pointer = Math.max(initialList.length - 1, 0)
   }
 
-  push(...item) {
+  push(item) {
     this.list = [
       ...this.list.slice(0, this.pointer + 1),
-      ...item
-    ].slice(-this.count)
+      item
+    ].slice(-(this.count + 1))
     this.pointer = this.list.length - 1
     return this.getCurrentItem()
   }

@@ -100,11 +100,11 @@ export default function ResizeAnchors(props) {
       x: 0,
       y: height,
       resize(event, absNode) {
-        const { x, y } = absNode
+        const { x, y, width } = absNode
         return {
-          x: event.x > 0 ? x : x + event.x,
+          x: event.x < width ? x + event.x : x + width,
           y: event.y > 0 ? y : y + event.y,
-          width: Math.abs(event.x),
+          width: Math.abs(width - event.x),
           height: Math.abs(event.y)
         }
       }

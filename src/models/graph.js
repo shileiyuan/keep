@@ -26,7 +26,7 @@ export default {
     },
 
     updateWithBackup(state, payload) {
-      backup.push(payload)
+      backup.push({ ...state, ...payload })
       const backupStatus = backup.checkStatus()
       return {
         ...state,
@@ -37,12 +37,20 @@ export default {
     undo(state) {
       const item = backup.undo()
       const backupStatus = backup.checkStatus()
-      return Object.assign({}, state, item, backupStatus)
+      return {
+        ...state,
+        ...item,
+        ...backupStatus
+      }
     },
     redo(state) {
       const item = backup.redo()
       const backupStatus = backup.checkStatus()
-      return Object.assign({}, state, item, backupStatus)
+      return {
+        ...state,
+        ...item,
+        ...backupStatus
+      }
     },
     reset(state) {
       backup.reset()
