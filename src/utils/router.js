@@ -1,7 +1,10 @@
 import React, { Suspense } from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Menu } from 'antd'
+import PrivateRoute from '@/components/PrivateRoute'
+import PrivateMenuItem from '@/components/PrivateMenuItem'
 
-export const formatRoutes = (routes, parent = '/') => {
+export function formatRoutes(routes, parent = '/') {
   return routes.reduce(
     (router, route) => {
       if (route.component) {
@@ -11,7 +14,8 @@ export const formatRoutes = (routes, parent = '/') => {
           strict: route.strict,
           component: route.component,
           // 是否放在menu中
-          menu: route.menu
+          menu: route.menu,
+          needAuth: route.needAuth
         })
       } else if (route.redirect) {
         router.redirects.push({
@@ -31,15 +35,30 @@ export const formatRoutes = (routes, parent = '/') => {
   )
 }
 
-export const renderRoutes = routes => {
-  const router = formatRoutes(routes)
-
+export function renderRoutes(router) {
   return (
     <Suspense fallback={null}>
       <Switch>
         {router.redirects.map((route, i) => <Redirect key={`redirect-${i}`} {...route} />)}
-        {router.routes.map(({ path, component, ...route }, i) => <Route key={`routes-${i}`} path={path} component={component} {...route} />)}
+        {router.routes.map(({ path, component, needAuth, ...route }, i) => {
+          const Component = needAuth ? PrivateRoute : Route
+          return <Component key={`routes-${i}`} path={path} component={component} {...route} />
+        })}
       </Switch>
     </Suspense>
   )
+}
+
+export function renderMenus(router) {
+  return router.routes
+    .filter(({ menu = true }) => menu)
+    .map(({ path, needAuth = false }) => {
+      const match = path.match(/\/([^/]+)$/)
+      const Component = needAuth ? PrivateMenuItem : Menu.Item
+      return (
+        <Component key={path}>
+          <Link to={path}>{match ? match[1] : ''}</Link>
+        </Component>
+      )
+    })
 }

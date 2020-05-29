@@ -12,9 +12,9 @@ const routes = [
   {
     path: '/Demo',
     routes: [
-      { path: 'Users', component: Users, exact: true },
+      { path: 'Users', component: Users, exact: true, needAuth: true },
       { path: 'Theme', component: Theme },
-      { path: 'MatrixList', component: MatrixList, exact: true },
+      { path: 'MatrixList', component: MatrixList, exact: true, needAuth: true },
       { path: 'MatrixList/MatrixDetail/:matrixId', component: MatrixDetail, exact: true, menu: false },
       { path: 'Count', component: Count }
     ],
