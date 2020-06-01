@@ -1,7 +1,7 @@
 import request from './request'
 import { addUrlParams } from '@/utils/common'
 
-const API_BASE = '/api'
+const API_BASE = process.env.NODE_ENV === 'development' ? '/api' : ''
 
 const API = {
   get: {

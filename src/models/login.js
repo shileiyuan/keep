@@ -1,11 +1,11 @@
 import API from '@/libs/api'
-import CONFIG from '@/libs/config'
+import { AUTH_TOKEN_STORAGE_KEY } from '@/libs/config'
 
 export default {
   state: {
     userName: '',
     userId: '',
-    isAuthed: Boolean(localStorage.getItem(CONFIG.AUTH_TOKEN_STORAGE_KEY))
+    isAuthed: Boolean(localStorage.getItem(AUTH_TOKEN_STORAGE_KEY))
   },
 
   reducers: {
@@ -27,11 +27,11 @@ export default {
           userId: id,
           userName: name
         })
-        localStorage.setItem(CONFIG.AUTH_TOKEN_STORAGE_KEY, token)
+        localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token)
       }
     },
     async getUserInfo() {
-      const token = localStorage.getItem(CONFIG.AUTH_TOKEN_STORAGE_KEY)
+      const token = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
       if (!token) return
       const res = await API.get.getUserInfo()
       if (res.success) {
@@ -51,7 +51,7 @@ export default {
         userId: '',
         isAuthed: false
       })
-      localStorage.removeItem(CONFIG.AUTH_TOKEN_STORAGE_KEY)
+      localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
     }
   }
 }

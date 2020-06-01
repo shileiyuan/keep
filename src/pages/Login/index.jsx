@@ -4,7 +4,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import API from '@/libs/api'
-import CONFIG from '@/libs/config'
+import { AUTH_TOKEN_STORAGE_KEY } from '@/libs/config'
 import './index.less'
 
 const FormItem = Form.Item
@@ -22,7 +22,7 @@ function Login() {
         userId: id,
         userName: name
       })
-      localStorage.setItem(CONFIG.AUTH_TOKEN_STORAGE_KEY, token)
+      localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token)
       history.push('/')
     }
   }

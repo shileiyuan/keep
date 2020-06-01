@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { message } from 'antd'
-import CONFIG from './config'
 import store from '@/models'
+import { AUTH_TOKEN_STORAGE_KEY, AUTH_TOKEN_HEADER } from '@/libs/config'
 
 const instance = axios.create({
   withCredentials: false,
@@ -12,9 +12,9 @@ const instance = axios.create({
 })
 
 function configRequest(config) {
-  const token = localStorage.getItem(CONFIG.AUTH_TOKEN_STORAGE_KEY)
+  const token = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
   if (config.url !== '/login' && token) {
-    config.headers[CONFIG.AUTH_TOKEN_HEADER] = token
+    config.headers[AUTH_TOKEN_HEADER] = token
   }
   return config
 }
@@ -26,7 +26,7 @@ instance.interceptors.response.use(
     const { status } = error.response
     switch (status) {
       case 403:
-        // localStorage.removeItem(CONFIG.AUTH_TOKEN_STORAGE_KEY)
+        // localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
         // window.location.href = '/'
         store.dispatch({ type: 'login/logout' })
         break

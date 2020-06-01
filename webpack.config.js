@@ -1,14 +1,12 @@
 function buildConfig(env) {
   switch (env) {
-    case 'dev':
-      return require('./scripts/webpack.dev.js')('development')
-    case 'mock':
-      return require('./scripts/webpack.dev.js')('mock')
-    case 'prod':
-      return require('./scripts/webpack.prod.js')('production')
+    case 'development':
+      return require('./scripts/webpack.dev.js')
+    case 'production':
+      return require('./scripts/webpack.prod.js')
     default:
     // can't arrive
   }
 }
 
-module.exports = buildConfig
+module.exports = buildConfig(process.env.NODE_ENV)
