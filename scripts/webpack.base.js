@@ -14,6 +14,10 @@ module.exports = {
     alias: {
       '@': srcPath()
     }
+    // modules: [
+    //   nodeModulesPath(),
+    //   srcPath()
+    // ]
   },
   module: {
     rules: [
@@ -25,7 +29,6 @@ module.exports = {
 
       {
         test: /\.less$/,
-        // include: [srcPath()],
         use: [
           {
             loader: 'style-loader'
@@ -36,7 +39,9 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              javascriptEnabled: true
+              lessOptions: {
+                javascriptEnabled: true
+              }
             }
           }
         ]

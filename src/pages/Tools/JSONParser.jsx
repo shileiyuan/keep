@@ -11,7 +11,7 @@ export default function JSONParser() {
     () => {
       try {
         const obj = JSON.parse(input)
-        const result = JSON.stringify(obj, null, 2)
+        const result = JSON.stringify(obj, null, 4)
         setOutput(result)
       } catch (error) {
         Modal.error({ title: error.message })

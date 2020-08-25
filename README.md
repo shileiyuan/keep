@@ -63,8 +63,8 @@ fetch、clean、多选、删除选中、调整图片大小：提供三种大小
 
 用来写Demo的组件，乱七八糟的不看也罢
 
+- [x] KnightGame 练习react-dnd的使用
 
 
-
-
+### WebSocket
 

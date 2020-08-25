@@ -1,4 +1,4 @@
-const webpackMerge = require('webpack-merge')
+const webpackMerge = require('webpack-merge').merge
 const baseConfig = require('./webpack.base.js')
 
 const HOST = '0.0.0.0'

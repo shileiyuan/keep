@@ -5,6 +5,9 @@ const srcPath = extarPath => {
   return path.join(__dirname, `../src${finalPath}`)
 }
 
+const nodeModulesPath = () => path.join(__dirname, '../node_modules')
+
 module.exports = {
-  srcPath
+  srcPath,
+  nodeModulesPath
 }
