@@ -1,0 +1,43 @@
+@import "~@/assets/styles/colors.less";
+
+@header-height: 34px;
+
+.collapse-section {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  background-color: @page-bg;
+  border: 1px solid @border-color;
+  transition: height ease-out 0.2s;
+  overflow: hidden;
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+  & > main {
+    flex-grow: 1;
+  }
+
+  h3 {
+    text-align: center;
+    border-bottom: 1px solid @border-color;
+    background-color: @header-bg;
+    height: @header-height;
+    line-height: @header-height;
+    overflow: hidden;
+    flex-shrink: 0;
+    .es-collapse-icon {
+      padding: 0 10px;
+      float: right;
+      cursor: pointer;
+      color: @link-color;
+      transition: transform ease-out 0.2s;
+    }
+  }
+
+  &.cs-collapse {
+    height: @header-height;
+    .es-collapse-icon {
+      transform: rotate(180deg);
+    }
+  }
+}
