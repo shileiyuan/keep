@@ -33,8 +33,44 @@ export default function LayoutDemo() {
         boxClassName='box4'
       >
         <header>header</header>
-        <div className='shengbei'>
+        <div className='box-body'>
           <main>main</main>
+          <aside className='left'>leftleftleftleft</aside>
+          <aside className='right'>
+            <div>aaa</div>
+          </aside>
+        </div>
+        <footer>footer</footer>
+      </Section>
+
+      <Section title='传统圣杯布局' boxClassName='box5'>
+        <header>header</header>
+        <div className='box-body'>
+          <main>main</main>
+          <aside className='left'>leftleftleftleft</aside>
+          <aside className='right'>
+            <div>aaa</div>
+          </aside>
+        </div>
+        <footer>footer</footer>
+      </Section>
+
+      <Section title='改进版圣杯布局' boxClassName='box6'>
+        <header>header</header>
+        <div className='box-body'>
+          <main>main</main>
+          <aside className='left'>leftleftleftleft</aside>
+          <aside className='right'>
+            <div>aaa</div>
+          </aside>
+        </div>
+        <footer>footer</footer>
+      </Section>
+
+      <Section title='双飞翼布局' boxClassName='box7'>
+        <header>header</header>
+        <div className='box-body'>
+          <div className='main-wrapper'><main>main</main></div>
           <aside className='left'>leftleftleftleft</aside>
           <aside className='right'>
             <div>aaa</div>

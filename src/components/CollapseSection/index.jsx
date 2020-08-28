@@ -4,9 +4,8 @@ import { DownOutlined } from '@ant-design/icons'
 import './index.less'
 
 export default function CollapseSection(props) {
-  const { title, children, boxClassName, footer, defaultCollpase = true, className, style = {} } = props
-  const [collapse, setCollapse] = useState(defaultCollpase)
-  console.log('collapse: ', collapse)
+  const { title, children, boxClassName, footer, defaultCollapse = true, className, style = {} } = props
+  const [collapse, setCollapse] = useState(defaultCollapse)
   const wrapClassName = cls('collapse-section', { 'cs-collapse': collapse, [className]: className })
   const wrapBoxClassName = cls('section-body', { [boxClassName]: boxClassName })
   return (
