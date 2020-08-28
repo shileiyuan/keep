@@ -28,6 +28,21 @@ export default function LayoutDemo() {
         <div>auto</div>
       </Section>
 
+      <Section
+        title='flex圣杯布局'
+        boxClassName='box4'
+      >
+        <header>header</header>
+        <div className='shengbei'>
+          <main>main</main>
+          <aside className='left'>leftleftleftleft</aside>
+          <aside className='right'>
+            <div>aaa</div>
+          </aside>
+        </div>
+        <footer>footer</footer>
+      </Section>
+
     </div>
   )
 }

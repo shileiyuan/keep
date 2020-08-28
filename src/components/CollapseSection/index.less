@@ -13,7 +13,7 @@
   &:not(:last-of-type) {
     margin-bottom: 20px;
   }
-  & > main {
+  & > .section-body {
     flex-grow: 1;
   }
 
@@ -25,10 +25,10 @@
     line-height: @header-height;
     overflow: hidden;
     flex-shrink: 0;
+    cursor: pointer;
     .es-collapse-icon {
       padding: 0 10px;
       float: right;
-      cursor: pointer;
       color: @link-color;
       transition: transform ease-out 0.2s;
     }

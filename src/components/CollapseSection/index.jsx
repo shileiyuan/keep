@@ -4,18 +4,20 @@ import { DownOutlined } from '@ant-design/icons'
 import './index.less'
 
 export default function CollapseSection(props) {
-  const { title, children, boxClassName, footer, defaultCollpase = false } = props
+  const { title, children, boxClassName, footer, defaultCollpase = true, className, style = {} } = props
   const [collapse, setCollapse] = useState(defaultCollpase)
   console.log('collapse: ', collapse)
+  const wrapClassName = cls('collapse-section', { 'cs-collapse': collapse, [className]: className })
+  const wrapBoxClassName = cls('section-body', { [boxClassName]: boxClassName })
   return (
-    <section className={cls('collapse-section', { 'cs-collapse': collapse })}>
-      <h3>
+    <section className={wrapClassName} style={style}>
+      <h3 onClick={() => setCollapse(!collapse)}>
         <span>{title}</span>
-        <span className='es-collapse-icon' onClick={() => setCollapse(!collapse)}>
+        <span className='es-collapse-icon'>
           <DownOutlined />
         </span>
       </h3>
-      <main className={boxClassName}>{children}</main>
+      <main className={wrapBoxClassName}>{children}</main>
       <footer>{footer}</footer>
     </section>
   )

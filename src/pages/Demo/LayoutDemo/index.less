@@ -1,5 +1,11 @@
 @import "~@/assets/styles/colors.less";
 
+.center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .layout-demo {
   .item {
     background-color: #f5f5d5;
@@ -15,13 +21,13 @@
 
   .box2 {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    // margin-left: -10px;
+    align-items: flex-start;
+    align-content: flex-start;
+    margin-left: -10px;
     .item {
       margin-bottom: 10px;
-      // margin-left: 10px;
+      margin-left: 10px;
     }
   }
 
@@ -36,6 +42,70 @@
       &:first-child {
         // 第一个元素占50%宽度，剩下的平分
         flex: 0 0 50%;
+      }
+    }
+  }
+
+  .box4 {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+
+    header,
+    footer {
+      text-align: center;
+      background-color: #666666;
+      line-height: 50px;
+      color: #fff;
+    }
+
+    .shengbei {
+      display: flex;
+      flex: 1;
+
+      aside {
+        .center();
+        // 两个侧边栏固定100px
+        flex: 0 0 100px;
+        &.left {
+          order: -1;
+          background-color: #77bbdd;
+        }
+        &.right {
+          background-color: #f96634;
+          display: block;
+          position: relative;
+          div {
+            border: 1px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
+
+      main {
+        .center();
+        flex: auto;
+        background-color: #ccc;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-demo {
+    .box4 {
+      .shengbei {
+        flex-direction: column;
+        aside {
+          flex: 1 1 auto;
+        }
+        main {
+          flex: 5 1 auto;
+        }
       }
     }
   }
