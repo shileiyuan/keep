@@ -79,6 +79,15 @@ export default function LayoutDemo() {
         <footer>footer</footer>
       </Section>
 
+      <Section title='多行文本居中' boxClassName='mul-text' defaultCollapse={false}>
+        <div>
+          <span>
+            background-color: @header-bg;
+            height: @header-he
+          </span>
+        </div>
+      </Section>
+
     </div>
   )
 }

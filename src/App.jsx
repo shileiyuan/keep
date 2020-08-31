@@ -21,8 +21,9 @@ function Home() {
   }, [dispatch.login, userId])
 
   const routes = [
-    { path: '/', redirect: '/Graph' },
+    { path: '/', redirect: '/CssDemo' },
     { path: '/Demo', component: lazy(() => import('@/pages/Demo')) },
+    { path: '/CssDemo', component: lazy(() => import('@/pages/CssDemo')) },
     { path: '/Graph', component: lazy(() => import('@/pages/Graph')) },
     { path: '/Tools', component: lazy(() => import('@/pages/Tools')) },
     { path: '/Tetris', component: lazy(() => import('@/pages/Tetris')) },

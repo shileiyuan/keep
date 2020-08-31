@@ -14,7 +14,6 @@
 }
 
 .layout-demo {
-  user-select: none;
   .item {
     background-color: #f5f5d5;
     text-align: center;
@@ -218,6 +217,23 @@
         float: left;
         width: 100px;
         margin-left: -100px;
+      }
+    }
+  }
+
+  // 多行文本居中
+  .mul-text {
+    div {
+      border: 1px solid red;
+      height: 250px;
+      width: 100px;
+      margin: auto;
+      line-height: 250px;
+
+      span {
+        display: inline-block;
+        line-height: 20px;
+        vertical-align: middle;
       }
     }
   }
