@@ -237,6 +237,37 @@
       }
     }
   }
+
+  .hv1 {
+    text-align: center;
+    .test {
+      background: #de3168;
+      display: inline-block;
+      color: #fff;
+      padding: 20px;
+    }
+    &::after {
+      display: inline-block;
+      content: "";
+      height: 100%;
+      width: 0;
+      vertical-align: middle;
+    }
+  }
+
+  .hv2 {
+    position: relative;
+
+    .test {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #de3168;
+      color: #fff;
+      padding: 20px;
+    }
+  }
 }
 
 @media (max-width: 768px) {

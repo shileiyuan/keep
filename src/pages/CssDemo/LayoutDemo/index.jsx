@@ -79,12 +79,26 @@ export default function LayoutDemo() {
         <footer>footer</footer>
       </Section>
 
-      <Section title='多行文本居中' boxClassName='mul-text' defaultCollapse={false}>
+      <Section title='多行文本居中' boxClassName='mul-text'>
         <div>
           <span>
             background-color: @header-bg;
             height: @header-he
           </span>
+        </div>
+      </Section>
+
+      <Section title='未知宽高的元素实现水平垂直居中：利用空元素或伪元素' boxClassName='hv1'>
+        <div className='test'>
+          水平垂直居中了吧<br />
+          两行文字哦
+        </div>
+      </Section>
+
+      <Section title='未知宽高的元素实现水平垂直居中：tansform加绝对定位' boxClassName='hv2' defaultCollapse={false}>
+        <div className='test'>
+          水平垂直居中了吧<br />
+          两行文字哦
         </div>
       </Section>
 
